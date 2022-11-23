@@ -1,32 +1,22 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
-
-# Controls when the workflow will run
+name: main
 on:
-  push:
-    branches: [ "main" ]
+  workflow_dispatch:
+
 jobs:
   build:
+    name: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-  SetupAndLinting:
+      - name: Build
+        run: echo building
+  deploy:
+    name: deploy
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - uses: trstringer/manual-approval@v1
         with:
           secret: ${{ github.TOKEN }}
-          approvers: user1
-          minimum-approvals: 1
-          issue-title: "need approval for rollback"
-          exclude-workflow-initiator-as-approver: false
-
-      - uses: actions/checkout@v3
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          approvers: SangeethaRM
+      - name: Deploy to production
+        run: echo deploying
